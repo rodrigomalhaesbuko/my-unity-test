@@ -40,7 +40,6 @@ public class PlayerMovement : MonoBehaviour
             if(onFloor){
                 Vector3 pushUp = new Vector3 (0f, 1f, 0f);
                 rb.AddForce (pushUp * jump);
-                transform.Rotate(new Vector3(0, 0, 400));
                 onFloor = false;
             }
 
