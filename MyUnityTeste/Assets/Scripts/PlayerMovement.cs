@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public float mySpeed;
+    public bool onDash;
     private GameObject player;
     private Vector3 initialPos;
 
@@ -32,8 +33,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 targetPos = player.transform.position;
         //Store the current horizontal input in the float moveHorizontal.
         float moveHorizontal = Input.GetAxisRaw ("Horizontal");
-        //Store the current vertical input in the float moveVertical.
-        float moveVertical = Input.GetAxisRaw ("Vertical");
+        ////Store the current vertical input in the float moveVertical.
+        //float moveVertical = Input.GetAxisRaw ("Vertical");
         
         if (Input.GetKeyDown("space"))
         {
@@ -45,22 +46,24 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        Vector3 pos = player.transform.position;
-        Vector3 dir = new Vector3(moveHorizontal,0).normalized;
+        Vector3 dir;
 
-        targetPos = targetPos + dir * mySpeed;
+        if (!onFloor)
+        {
+            transform.Rotate(new Vector3(0, 0, -2));
+        }
 
-        // //RaycastHit2D hit = Physics2D.Raycast(pos,dir,mySpeed);
+        if (onDash)
+        {
+            dir = new Vector3(1, 0).normalized;
+        }
+        else{
+            dir = new Vector3(moveHorizontal, 0).normalized;
+        }
+
+        targetPos += dir * mySpeed;
+
         player.transform.position = targetPos;
-
-            // if(hit.collider.tag == "Finish"){
-            //     player.GetComponent<SpriteRenderer>().color = Color.yellow;
-            //     player.transform.localScale = player.transform.localScale * (float) 1;
-            // }else if(hit.collider.tag == "WallPuto") {
-            //     player.transform.position = initialPos;
-            // }else if(hit.collider.tag == "Wall") {
-            //     // faz nada 
-            // }
     }
 
     void OnCollisionEnter2D(Collision2D other) {
